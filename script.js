@@ -36,22 +36,28 @@ async function PDFToText(){
 
         }
         const slicedOriginal = parts.slice(start + 1, end);
-        let courseCodes = []
-        let subjectNames = []
-        let days = []
-        let time = []
-        let room = []
-        let temporary = {}
-        let units = ['1.00','2.00','3.00','4.00','5.00','6.00','7.00','8.00','9.00','10.00']
+        const units = new Set(['1.00','2.00','3.00','4.00','5.00','6.00','7.00','8.00','9.00','10.00'])
+        const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']
         let valid = []
+        let courseCodes = {}
+        let daysOfWeek = {}
 
         function sliceCut(sliced){
             let i = 0
-            while(!units.includes(sliced[i].trim()) && i <= sliced.length){
-                if(sliced[i] !== " "){
+            while(!units.has(sliced[i].trim()) && i <= sliced.length){
+                    if(i === 0){
+                        let currentCode = sliced[i].trim()
+                        let currentSubject = sliced[1].slice(currentCode.length + 1);
+                        courseCodes[currentCode] = currentSubject;
+                    }
+                    else if(days.includes(sliced[i])){
+                        daysOfWeek[days.indexOf(sliced[i].trim())] = 
+
+                    }
+
                     valid.push(sliced[i])
+
                     i++
-                }
                 
             }
             return
@@ -60,6 +66,7 @@ async function PDFToText(){
         }
        sliceCut(slicedOriginal)
        console.log(valid)
+       console.log(courseCodes)
         
         
     }

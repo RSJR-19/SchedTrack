@@ -22,7 +22,7 @@ async function PDFToText(){
                 extractedText += item.str + "SPACE";
             })
         }
-        const parts = extractedText.split(/SPACE|\|/)
+        const parts = extractedText.split(/SPACE|\||,/)
         let start;
         let end;
         for(let i = 0; i <= parts.length; i++){
@@ -35,8 +35,33 @@ async function PDFToText(){
             }
 
         }
-        const sliced = parts.slice(start, end);
-        console.log(sliced)
+        const slicedOriginal = parts.slice(start + 1, end);
+        let courseCodes = []
+        let subjectNames = []
+        let days = []
+        let time = []
+        let room = []
+        let temporary = {}
+        let units = ['1.00','2.00','3.00','4.00','5.00','6.00','7.00','8.00','9.00','10.00']
+        let valid = []
+
+        function sliceCut(sliced){
+            let i = 0
+            while(!units.includes(sliced[i].trim()) && i <= sliced.length){
+                if(sliced[i] !== " "){
+                    valid.push(sliced[i])
+                    i++
+                }
+                
+            }
+            return
+
+
+        }
+       sliceCut(slicedOriginal)
+       console.log(valid)
+        
+        
     }
     fileReader.readAsArrayBuffer(fileInput);
 }

@@ -36,7 +36,8 @@ async function PDFToText(){
 
         }
         const slicedOriginal = parts.slice(start + 1, end);
-        const finalSlice = slicedOriginal.filter(item => item != " ");
+        let finalSlice = slicedOriginal.filter(item => item.trim() != " " &&  item.trim() != "" && item.trim().length > 2);
+        console.log(finalSlice)
         const units = new Set(['1.00','2.00','3.00','4.00','5.00','6.00','7.00','8.00','9.00','10.00'])
         const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']
         const daysOfWeek = {
@@ -48,14 +49,14 @@ async function PDFToText(){
             5 : ['FRIDAY',[]],
             6 : ['SATURDAY',[]]
         }
-        let valid = []
-        let daysOfWeekPosition;
+
 
         function sliceCut(sliced){
             if(sliced.length >= 0){
+                let elementCount = 1;
                 let dayCount = 0;
                 let newClass = [];
-                 let i = 0
+                let i = 0
                 while(!units.has(sliced[i].trim()) && i <= sliced.length){
                     if(i === 0){
                         let currentCode = sliced[i].trim()
@@ -68,7 +69,7 @@ async function PDFToText(){
                             dayCount++
                             newClass.push(sliced[i + 1].trim())
                             newClass.push(sliced[i + 2].trim())
-                            daysOfWeek[days.indexOf(sliced[i].trim())][1].push(newClass);
+                            daysOfWeek[days.indexOf(sliced[i].trim())][1].push([...newClass]);
                             while(newClass.length > 2){
                                 newClass.pop()
                             }
@@ -76,22 +77,22 @@ async function PDFToText(){
                         else{
                             newClass.push(sliced[i + 1].trim())
                             newClass.push(sliced[i + 2].trim())
-                            daysOfWeek[days.indexOf(sliced[i].trim())][1].push(newClass);
+                            daysOfWeek[days.indexOf(sliced[i].trim())][1].push([...newClass]);
                         }
                         
 
                     }
                     i++
-                
+                    elementCount++
             }
-            return
-
+            finalSlice = finalSlice.slice(elementCount);
             }
-        
-
-
         }
-       sliceCut(finalSlice)
+        
+        while(finalSlice.length > 0){
+            sliceCut(finalSlice)
+        }
+       
        console.log(daysOfWeek)
 
         

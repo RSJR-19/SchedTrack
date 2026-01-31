@@ -2,10 +2,50 @@ function displayName() {
     const fileInput = document.getElementById('fileInput');
 }
 let schedule;
+let scheduleToday;
+
+
+function getDayToday(schedule){
+    const date = new Date();
+    let dayToday = 1 //date.getDay();
+    let timeScheds = []
+    let timeStart =[]
+    let timeEnd =[]
+    scheduleToday = schedule[dayToday][1]
+    scheduleToday.forEach(time =>{
+        let cleanedTime = ''
+        let addedTimeMorning = 0
+        let addedTimeAfternoon = 0
+        let morning = time.slice((time.length/2) -1 )
+        
+        for (const digit of time[2]){
+            if(digit === 'P'){
+                addedTime = 1200;
+            }
+            if (Number.isFinite(Number(digit))){
+                cleanedTime += digit
+            }
+        }
+        timeStart.push(parseInt(cleanedTime.slice(0, 4).trim()) + addedTime)
+        timeEnd.push(parseInt(cleanedTime.slice(4).trim()) + addedTime)
+    })
+    
+    console.log(scheduleToday)
+    console.log(timeStart)
+    console.log(timeEnd)
+}
+
+
+
+
+
+
+
+
 window.addEventListener('load', ()=>{
     if (JSON.parse(localStorage.getItem('schedule') !== null)){
-        storage = JSON.parse(localStorage.getItem('schedule'))
-        console.log(storage);
+        schedule = JSON.parse(localStorage.getItem('schedule'))
+        getDayToday(schedule);
     }
     else{
         alert('none');
@@ -83,6 +123,7 @@ function cleanExtractedText(text) {
 
     schedule = daysOfWeek;
     localStorage.setItem('schedule', JSON.stringify(schedule));
+    getDayToday(schedule);
     console.log('added');
 }
 

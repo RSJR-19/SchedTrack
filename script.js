@@ -9,15 +9,51 @@ function getDayToday(schedule){
     const date = new Date();
     let dayToday = 1 //date.getDay();
     let timeScheds = []
+    let rawStart = []
+    let rawEnd = []
     let timeStart =[]
     let timeEnd =[]
+    let addedTime = 0
     scheduleToday = schedule[dayToday][1]
     scheduleToday.forEach(time =>{
-        let cleanedTime = ''
-        let addedTimeMorning = 0
-        let addedTimeAfternoon = 0
-        let morning = time.slice((time.length/2) -1 )
+        time[2] = time[2].split('-')
+        rawStart.push(time[2][0])
+        rawEnd.push(time[2][1])
+    })
+    console.log(rawEnd, rawStart)
+    rawStart.forEach(time =>{
+        addedTime = 0
+        let cleanedTime = ""
+        if(time.includes('PM')){
+            addedTime = 1200;
+        }
+        for (const digit of time){
+            if (Number.isFinite(Number(digit))){
+                
+                cleanedTime += digit
+            }
+        }
+        timeStart.push(parseInt(cleanedTime.trim()) + addedTime);
+    })
+    rawEnd.forEach(time =>{
+        addedTime = 0
+        let cleanedTime = ""
+        if(time.includes('PM')){
+            addedTime = 1200;
+        }
+        for (const digit of time){
+            if (Number.isFinite(Number(digit))){
+                
+                cleanedTime += digit
+            }
+        }
+        timeEnd.push(parseInt(cleanedTime.trim()) + addedTime);
+    })
         
+    console.log(timeStart)
+    console.log(timeEnd)
+
+        /*
         for (const digit of time[2]){
             if(digit === 'P'){
                 addedTime = 1200;
@@ -28,11 +64,10 @@ function getDayToday(schedule){
         }
         timeStart.push(parseInt(cleanedTime.slice(0, 4).trim()) + addedTime)
         timeEnd.push(parseInt(cleanedTime.slice(4).trim()) + addedTime)
-    })
+        */
     
-    console.log(scheduleToday)
-    console.log(timeStart)
-    console.log(timeEnd)
+    
+    
 }
 
 

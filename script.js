@@ -7,20 +7,29 @@ let scheduleToday;
 
 function getDayToday(schedule){
     const date = new Date();
-    let dayToday = 1 //date.getDay();
-    let timeScheds = []
+    let dayToday = 6//date.getDay();
+    let timeToSubject = {}
     let rawStart = []
     let rawEnd = []
     let timeStart =[]
     let timeEnd =[]
+    let courseCodes = []
+    let subjects = []
+    let rooms = []
     let addedTime = 0
+    
     scheduleToday = schedule[dayToday][1]
+    scheduleToday.forEach(subject =>{
+        courseCodes.push(subject[0].trim());
+        subjects.push(subject[1].trim());
+        rooms.push(subject[3].trim());
+    })
     scheduleToday.forEach(time =>{
         time[2] = time[2].split('-')
         rawStart.push(time[2][0])
         rawEnd.push(time[2][1])
     })
-    console.log(rawEnd, rawStart)
+    let schedIndex = 0;
     rawStart.forEach(time =>{
         addedTime = 0
         let cleanedTime = ""
@@ -33,7 +42,10 @@ function getDayToday(schedule){
                 cleanedTime += digit
             }
         }
-        timeStart.push(parseInt(cleanedTime.trim()) + addedTime);
+        let arrangedTime = parseInt(cleanedTime.trim()) + addedTime
+        timeToSubject[arrangedTime] = [courseCodes[schedIndex], subjects[schedIndex], rooms[schedIndex]]
+        timeStart.push(arrangedTime);
+        schedIndex ++
     })
     rawEnd.forEach(time =>{
         addedTime = 0
@@ -47,29 +59,16 @@ function getDayToday(schedule){
                 cleanedTime += digit
             }
         }
-        timeEnd.push(parseInt(cleanedTime.trim()) + addedTime);
+        let arrangedTime = parseInt(cleanedTime.trim()) + addedTime
+        console.log(scheduleToday)
+        timeEnd.push(arrangedTime);
     })
-        
     console.log(timeStart)
     console.log(timeEnd)
+  console.log(timeToSubject)
+  console.log(courseCodes, subjects, rooms)
 
-        /*
-        for (const digit of time[2]){
-            if(digit === 'P'){
-                addedTime = 1200;
-            }
-            if (Number.isFinite(Number(digit))){
-                cleanedTime += digit
-            }
-        }
-        timeStart.push(parseInt(cleanedTime.slice(0, 4).trim()) + addedTime)
-        timeEnd.push(parseInt(cleanedTime.slice(4).trim()) + addedTime)
-        */
-    
-    
-    
 }
-
 
 
 

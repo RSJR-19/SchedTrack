@@ -5,9 +5,9 @@ let schedule;
 let scheduleToday;
 
 
-function getDayToday(schedule){
+function getSchedToday(schedule){
     const date = new Date();
-    let dayToday = 6//date.getDay();
+    let dayToday = 1//date.getDay();
     let timeToSubject = {}
     let rawStart = []
     let rawEnd = []
@@ -54,22 +54,33 @@ function getDayToday(schedule){
             addedTime = 1200;
         }
         for (const digit of time){
-            if (Number.isFinite(Number(digit))){
-                
+            if (Number.isFinite(Number(digit))){ 
                 cleanedTime += digit
             }
         }
         let arrangedTime = parseInt(cleanedTime.trim()) + addedTime
-        console.log(scheduleToday)
+        
         timeEnd.push(arrangedTime);
     })
-    console.log(timeStart)
-    console.log(timeEnd)
-  console.log(timeToSubject)
-  console.log(courseCodes, subjects, rooms)
+    console.log(bubble(timeStart))
+    console.log(bubble(timeEnd))
 
 }
 
+function bubble(x){
+    let is_sorted = false
+    while (!is_sorted){
+        is_sorted = true;
+        for(let i = 0; i < x.length - 1; i++){
+            if (x[i] > x[i + 1]){
+                [x[i], x[i + 1]] = [x[i + 1], x[i]]
+                is_sorted = false;
+            }
+        }
+
+    }
+    return x
+}
 
 
 
@@ -79,7 +90,7 @@ function getDayToday(schedule){
 window.addEventListener('load', ()=>{
     if (JSON.parse(localStorage.getItem('schedule') !== null)){
         schedule = JSON.parse(localStorage.getItem('schedule'))
-        getDayToday(schedule);
+        getSchedToday(schedule);
     }
     else{
         alert('none');
@@ -157,7 +168,7 @@ function cleanExtractedText(text) {
 
     schedule = daysOfWeek;
     localStorage.setItem('schedule', JSON.stringify(schedule));
-    getDayToday(schedule);
+    getSchedToday(schedule);
     console.log('added');
 }
 

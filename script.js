@@ -196,10 +196,8 @@ function sliceCut(sliced, units, days, daysOfWeek) {
                 newClass.length = 2;
             }
         }
-
         i++;
         elementCount++;
     }
-
     return sliced.slice(elementCount);
 }

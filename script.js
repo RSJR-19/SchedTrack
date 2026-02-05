@@ -119,7 +119,6 @@ async function PDFToText() {
                 extractedText += item.str + "SPACE";
             });
         }
-
         cleanExtractedText(extractedText);
     };
 
